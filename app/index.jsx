@@ -1,4 +1,5 @@
 import MovieList from "@/components/MovieList";
+import TopRated from "@/components/TopRated";
 import TrendingMovies from "@/components/TrendingMovies";
 
 import { useState } from "react";
@@ -24,9 +25,10 @@ export default function Index() {
         </View>
 
       </SafeAreaView>
-      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 10 }}>
+      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 10 }} overScrollMode="never">
         <TrendingMovies data={trending} />
-        <MovieList data={upComing}/>
+        <MovieList data={upComing} title={"UpComing"}/>
+        <TopRated data={topRated}/> 
       </ScrollView>
 
 
