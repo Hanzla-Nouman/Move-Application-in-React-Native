@@ -11,7 +11,7 @@ export default function Index() {
   const [upComing, setUpComing] = useState([1,2,3,4,5,6,7,8,9])
   const [topRated, setTopRated] = useState([1,2,3,4,5,6,7,8,9])
   return (
-    <View className="flex-1 bg-neutral-800">
+    <View className="flex-1 bg-neutral-900">
       <SafeAreaView className="mt-7">
         <StatusBar style="auto" />
 

@@ -1,7 +1,9 @@
+
 import React from "react";
 import { ScrollView, Text, View, TouchableOpacity, Image } from "react-native";
 
-const Cast = ({ data ,navigation}) => {
+const Cast = ({ data,navigation }) => {
+
   const personName = "Tom Cruise";
   const chracterName = "Ethan Bob James";
   return (
@@ -18,7 +20,7 @@ const Cast = ({ data ,navigation}) => {
         {data &&
           data.map((item, index) => {
             return (
-              <TouchableOpacity key={index} className="mx-2 mt-2 items-center" onPress={()=>navigation('Person',item)}>
+              <TouchableOpacity key={index} className="mx-2 mt-2 items-center" onPress={()=>navigation.navigate('Person',item)}>
                 <View className="items-center rounded-full overflow-hidden h-24 w-24 border border-neutral-400">
                 <Image source={require('../assets/images/pic1.jpg')} className="rounded-2xl h-24 w-24"/>
                 </View>

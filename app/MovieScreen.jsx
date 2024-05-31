@@ -19,7 +19,7 @@ const MovieScreen = () => {
 
   }, [params])
   return (<>
-    <ScrollView contentContainerStyle={{ paddingBottom: 20 }} overScrollMode='never' className="flex-1 bg-neutral-800">
+    <ScrollView contentContainerStyle={{ paddingBottom: 20 }} overScrollMode='never' className="flex-1 bg-neutral-900">
       <SafeAreaView className="flex-row absolute justify-between items-center px-4 w-full z-20 mt-4">
         <TouchableOpacity onPress={() => navigation.goBack()} className="mt-6 bg-slate-400 rounded-xl p-1">
           <ChevronLeftIcon color={"white"} strokeWidth={2.5} size={30} />
