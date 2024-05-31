@@ -8,10 +8,10 @@ const MovieList = ({ data,title,hideSeeAll }) => {
 
   return (
     <View className="">
-      <View className="justify-between flex-row mt-4 items-center mb-3">
+      <View className="justify-between flex-row mt-4 items-baseline mb-3">
         <Text className="text-white  mx-4 text-lg font-semibold">{title}</Text>
 
-        {!hideSeeAll && (<TouchableOpacity ><Text className="text-yellow-500 mx-6 text-lg">See all</Text></TouchableOpacity>)}
+        {!hideSeeAll && (<TouchableOpacity ><Text className="text-yellow-400 mx-6 text-sm">See all</Text></TouchableOpacity>)}
       </View>
       <ScrollView horizontal showsHorizontalScrollIndicator={false} overScrollMode='never' contentContainerStyle={{paddingHorizontal:15}}>
 
