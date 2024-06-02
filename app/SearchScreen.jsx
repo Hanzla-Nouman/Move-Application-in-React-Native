@@ -9,7 +9,7 @@ const SearchScreen = () => {
     const [results,setResults]=useState([])
     const navigation = useNavigation()
   const [loading, setLoading] = useState(false);
-
+ 
   return (<View className="flex-1 bg-neutral-900">
     <SafeAreaView>
         <View className="mx-4 mt-8 mb-3 flex-row justify-between items-center border border-neutral-500 rounded-full">
