@@ -1,3 +1,4 @@
+import Loading from "@/components/Loading";
 import MovieList from "@/components/MovieList";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import React, { useEffect, useState } from "react";
@@ -20,13 +21,13 @@ const PersonScreen = () => {
   const navigation = useNavigation();
   const [isFavourite, setIsFavourite] = useState(false);
   const [personMovies, setPersonMovies] = useState([1,2,3,4,5]);
+  const [loading, setLoading] = useState(false)
 
   return (
-    <>
-      <ScrollView
+    <View className="flex-1 bg-neutral-900">
+      {loading?(<Loading/>):( <ScrollView
         contentContainerStyle={{ paddingBottom: 20 }}
         overScrollMode="never"
-        className="flex-1 bg-neutral-900"
       >
         <SafeAreaView className="flex-row  justify-between items-center px-4 w-full z-20 mt-4">
           <TouchableOpacity
@@ -91,8 +92,9 @@ const PersonScreen = () => {
 <Text className="text-neutral-400 tracking-wide">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Labore corrupti natus deserunt quam laboriosam error! Accusamus assumenda reprehenderit veniam laudantium, expedita placeat esse! Placeat fugiat architecto quae corporis ducimus eveniet quidem a at? Minima qui saepe hic amet beatae nulla fuga similique corrupti delectus illo velit laudantium quos numquam, aliquid dolorem modi nihil ad sed in.</Text>
         </View>
         <MovieList title={"Movies"} hideSeeAll={true} data={personMovies}/>
-      </ScrollView>
-    </>
+      </ScrollView>)}
+     
+    </View>
   );
 };
 

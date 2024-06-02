@@ -14,6 +14,7 @@ import Index from "./index";
 import MovieList from "@/components/MovieList";
 import MovieScreen from "./MovieScreen";
 import PersonScreen from "./PersonScreen";
+import SearchScreen from "./SearchScreen";
  export default function AppNavigation(){
     return(
         <NavigationContainer independent={true}>
@@ -21,6 +22,7 @@ import PersonScreen from "./PersonScreen";
                 <Stack.Screen name="Index" component={Index} options={{headerShown:false}} />
                 <Stack.Screen name="Movie" component={MovieScreen} options={{headerShown:false}} />
                 <Stack.Screen name="Person" component={PersonScreen} options={{headerShown:false}} />
+                <Stack.Screen name="Search" component={SearchScreen} options={{headerShown:false}} />
             </Stack.Navigator>
         </NavigationContainer>
     )
