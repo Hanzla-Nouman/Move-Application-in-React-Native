@@ -1,6 +1,7 @@
 import React from 'react'
 import { Dimensions, Image, ScrollView, Text, TouchableOpacity, View,TouchableWithoutFeedback } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
+import { image185 } from '@/api/movieDb'
 const MovieList = ({ data,title,hideSeeAll }) => {
   const navigation = useNavigation()
   var { width, height } = Dimensions.get('window')
@@ -15,18 +16,17 @@ const MovieList = ({ data,title,hideSeeAll }) => {
       </View>
       <ScrollView horizontal showsHorizontalScrollIndicator={false} overScrollMode='never' contentContainerStyle={{paddingHorizontal:15}}>
 
-        {data.map((item, index) => {
+        {data && data.map((item, index) => {
           return (<TouchableWithoutFeedback key={index} onPress={() => navigation.push('Movie', item)} >
             <View className="space-y-1 mr-6 ">
-            <Image
-              source={require('../assets/images/pic1.jpg')}
-              // resizeMode="contain"
+           {item.poster_path && <Image
+              source={{uri: image185(item.poster_path)}}
               style={{ width: width * 0.38, height: height * 0.25
                }}
               className="rounded-3xl"
-            />
+            />}
             <Text className="text-neutral-300  text-sm   ">
-              {movieName.length>18? movieName.slice(0,18)+'...':movieName}
+              {item.title && item.title.length>18? item.title.slice(0,18)+'...':item.title}
               </Text>
             </View>
           </TouchableWithoutFeedback>)

@@ -18,16 +18,37 @@ import { LinearGradient } from "expo-linear-gradient";
 import Cast from "@/components/Cast";
 import MovieList from "@/components/MovieList";
 import Loading from "@/components/Loading";
+import { getMovieCredits, getMovieDetails, getMovieSimilar } from "@/api/movieDb";
 const MovieScreen = () => {
   const navigation = useNavigation();
-  const { params } = useRoute();
-  const [cast, setCast] = useState([1, 2, 3, 4, 5]);
+  const { params: item } = useRoute();
+  const [cast, setCast] = useState();
   const [similarMovies, setsimilarMovies] = useState([1, 2, 3, 4, 5]);
   const [isFavourite, setIsFavourite] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [movie, setMovie] = useState();
 
-  useEffect(() => {}, [params]);
-
+  useEffect(() => {
+    fetchMovieDetails(item.id);
+    fetchMovieCredits(item.id);
+    fetchSimilarMovies(item.id);
+    setLoading(true);
+  }, [item]);
+  const fetchMovieDetails = async (id) => {
+    const { data } = await getMovieDetails(id);
+    setMovie(data);
+    setLoading(false);
+  };
+  const fetchMovieCredits = async (id) => {
+    const { data } = await getMovieCredits(id);
+    setCast(data.cast);
+    setLoading(false);
+  };
+  const fetchSimilarMovies = async (id) => {
+    const { data } = await getMovieSimilar(id);
+    setsimilarMovies(data.results);
+    setLoading(false);
+  };
   return (
     <>
       <View className="flex-1 bg-neutral-900">
@@ -55,7 +76,9 @@ const MovieScreen = () => {
             <View>
               <Image
                 style={{ width: width, height: height * 0.55 }}
-                source={require("../assets/images/pic1.jpg")}
+                source={{
+                  uri: "https://image.tmdb.org/t/p/w500" + movie?.poster_path,
+                }}
               />
               <LinearGradient
                 colors={[
@@ -70,30 +93,24 @@ const MovieScreen = () => {
               />
             </View>
             <Text className="text-white text-2xl font-semibold text-center tracking-wider -mt-20 px-4 space-y-3">
-              {movieName}
+              {movie?.title}
             </Text>
             <Text className="text-neutral-300 mt-2 text-base  text-center tracking-wider">
-              Released 2020 174 min
+              {movie?.status} • {movie?.release_date.split("-")[0]} •{" "}
+              {movie?.runtime} min
             </Text>
             <View className="flex-row justify-center">
-              <Text className="text-neutral-300 mt-2 text-base mx-2 text-center tracking-wider">
-                Action
-              </Text>
-              <Text className="text-neutral-300 mt-2 text-base mx-2 text-center tracking-wider">
-                Thrill
-              </Text>
-              <Text className="text-neutral-300 mt-2 text-base mx-2 text-center tracking-wider">
-                Comedy
-              </Text>
+              {movie?.genres?.map((gener, index) => {
+                let showDot = index + 1 !== movie.genres.length
+                return (
+                  <Text key={index} className="text-neutral-300 mt-2 text-base mx-1 text-center tracking-wider">
+                    {gener?.name} {showDot && "•"}
+                  </Text>
+                );
+              })}
             </View>
             <Text className="text-neutral-400 mt-2 mx-4 tracking-wider">
-              Lorem, ipsum dolor sit amet consectetur adipisicing elit.
-              Reprehenderit odio, explicabo ducimus id odit molestiae
-              laudantium, dolor numquam blanditiis impedit similique! Similique
-              culpa nobis placeat commodi dolores repellendus nemo quaerat
-              excepturi, aut voluptatem dicta quae illo nisi odio fugit enim,
-              nesciunt reprehenderit hic? Quam sunt impedit atque laborum odit
-              voluptatum facere? Veniam consequatur pariatur magnam qui.
+              {movie?.overview}
             </Text>
             <Cast data={cast} navigation={navigation} />
             <MovieList

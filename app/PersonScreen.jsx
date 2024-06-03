@@ -1,3 +1,4 @@
+import { getPersonDetails, getPersonMovieCredits, image342 } from "@/api/movieDb";
 import Loading from "@/components/Loading";
 import MovieList from "@/components/MovieList";
 import { useNavigation, useRoute } from "@react-navigation/native";
@@ -19,11 +20,29 @@ var { width, height } = Dimensions.get("window");
 
 const PersonScreen = () => {
   const navigation = useNavigation();
+  const {params:item}= useRoute()
   const [isFavourite, setIsFavourite] = useState(false);
-  const [personMovies, setPersonMovies] = useState([1,2,3,4,5]);
-  const [loading, setLoading] = useState(false)
+  const [personMovies, setPersonMovies] = useState([]);
+  const [person, setPerson] = useState({});
+  const [loading, setLoading] = useState(true)
+useEffect(() => {
+  
+fetchPersonDetails(item.id)
+  fetchPersonMovies(item.id)
+  
+}, [item])
+const fetchPersonDetails = async(id)=>{ 
+  const {data} = await getPersonDetails(id)
+  setPerson(data)
+  setLoading(false)
+}
+const fetchPersonMovies = async(id)=>{
+  const {data} = await getPersonMovieCredits(id)
+  if(data && data?.cast) setPersonMovies(data.cast)
+  setLoading(false)
+}
 
-  return (
+  return ( 
     <View className="flex-1 bg-neutral-900">
       {loading?(<Loading/>):( <ScrollView
         contentContainerStyle={{ paddingBottom: 20 }}
@@ -57,39 +76,43 @@ const PersonScreen = () => {
           <View className=" justify-center items-center rounded-full overflow-hidden h-80 w-80 border border-neutral-400">
             <Image
               style={{ width: width * 0.74, height: height * 0.43 }}
-              source={require("../assets/images/pic1.jpg")}
+              source={{uri: image342(person?.profile_path)}}
             />
           </View>
         </View>
         <View className="mt-4">
           <Text className="text-3xl text-center text-white font-bold">
-            Tom Cruise
+           {person?.name}
           </Text>
           <Text className="text-base text-center text-neutral-500">
-            London,United Kingdom
+            {person?.place_of_birth}
           </Text>
         </View>
         <View className="mx-3 p-3 mt-6 flex-row justify-between items-center  bg-neutral-700 rounded-full">
           <View className="border-r-2 border-r-neutral-300 px-2 items-center">
             <Text className="text-white font-semibold">Gender</Text>
-            <Text className="text-neutral-300  text-sm">Male</Text>
+            <Text className="text-neutral-300  text-sm">
+              {person.gender === 1 ? "Female":"Male"}
+            </Text>
           </View>
           <View className="border-r-2 border-r-neutral-300 px-2 items-center">
             <Text className="text-white font-semibold">Bithday</Text>
-            <Text className="text-neutral-300  text-sm">1979-08-03</Text>
+            <Text className="text-neutral-300  text-sm">{person?.birthday}</Text>
           </View>
           <View className="border-r-2 border-r-neutral-300 px-2 items-center">
             <Text className="text-white font-semibold">Known for</Text>
-            <Text className="text-neutral-300  text-sm">Acting</Text>
+            <Text className="text-neutral-300  text-sm">{person?.known_for_department}</Text>
           </View>
           <View className="px-1 pr-1 items-center">
             <Text className="text-white font-semibold">Popularity</Text>
-            <Text className="text-neutral-300  text-sm">64.34</Text>
+            <Text className="text-neutral-300  text-sm">{person?.popularity.toFixed(2)}%</Text>
           </View>
         </View>
         <View className="mt-4 mx-4 space-y-2">
 <Text className="text-white text-lg">Biography</Text>
-<Text className="text-neutral-400 tracking-wide">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Labore corrupti natus deserunt quam laboriosam error! Accusamus assumenda reprehenderit veniam laudantium, expedita placeat esse! Placeat fugiat architecto quae corporis ducimus eveniet quidem a at? Minima qui saepe hic amet beatae nulla fuga similique corrupti delectus illo velit laudantium quos numquam, aliquid dolorem modi nihil ad sed in.</Text>
+<Text className="text-neutral-400 tracking-wide">
+  {person?.biography || "N/A"}
+  </Text>
         </View>
         <MovieList title={"Movies"} hideSeeAll={true} data={personMovies}/>
       </ScrollView>)}
